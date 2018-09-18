@@ -480,7 +480,7 @@ class Network:
 
     def compute_priority(self, dst, max_rounds=10, max_neigh=None, handle_correlation=False):
         for i in range(max_rounds):
-            print('\n{} Round {} {}'.format('*' * 30, i, '*' * 30))
+            #print('\n{} Round {} {}'.format('*' * 30, i, '*' * 30))
             for node in self.nodes:
                 if not node == dst:
                     mcs = self.ideal_coop_mcs(node, dst, max_neigh, handle_correlation)
@@ -502,12 +502,12 @@ class Network:
                     #               self.egress_neigh(node, dst, max_neigh, mcs),
                     #               ['{:6.2f}'.format(p) for p in priorities]
                     #               ))
-                    print('\nNode: {}\t\tPriority: {:6.4f}\tMCS: {}\nEgressNeigh: {}\nNeighPriority: {}'
-                          .format(node, self.get_priority(node, dst),
-                                  self.ideal_coop_mcs(node, dst, max_neigh, handle_correlation),
-                                  self.egress_neigh(node, dst, max_neigh, mcs),
-                                  ['{:6.2f}'.format(p) for p in priorities]
-                                  ))
+                    # print('\nNode: {}\t\tPriority: {:6.4f}\tMCS: {}\nEgressNeigh: {}\nNeighPriority: {}'
+                    #       .format(node, self.get_priority(node, dst),
+                    #               self.ideal_coop_mcs(node, dst, max_neigh, handle_correlation),
+                    #               self.egress_neigh(node, dst, max_neigh, mcs),
+                    #               ['{:6.2f}'.format(p) for p in priorities]
+                    #               ))
     #
     # def gen_dot_file_link_datarate(self, outfile='/tmp/map_DR.pdf'):
     #     import pygraphviz as pgv

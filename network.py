@@ -247,13 +247,13 @@ class Network:
         self.dst_coop_groups = {}
 
         if not initialising:
+            print('updating priorities')
             # failed edges have to be reseted manually if wished
             self.net.init_priorities()
 
         for dst in self.net.nodes.keys():
             # for initializing the priorities do not need to be updated
             if not initialising:
-                print('updating for dst ', dst)
                 self.net.compute_priority(dst, max_rounds=10, max_neigh=MAX_NEIGH
                                           , handle_correlation=False)
             coop_group = {}

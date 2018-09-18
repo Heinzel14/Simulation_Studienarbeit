@@ -103,31 +103,34 @@ def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=
 
 
 def main():
+    # issue: the result of the sending time is different when different calculations are done after
+    # each other. maybe because of greedy mode
     global tot_m
     dst = 'frawi'
     source = 'kitchen'
     network = Network()
-    # network.set_node_failure('fl_geek')
+    network.set_next_loss_window()
+    network.update_coop_groups()
     send_time = calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False)
     print(send_time, 'sending time')
-    paths = network.get_links_on_path(source, dst)
-    print(len(paths))
-    for i in combinations(paths):
-        for link in i:
-            network.set_link_failure(link)
-        if not network.way_to_dst(source, dst):
-            print(network.way_to_dst(source, dst))
-        network.reset_failures()
     # send_time = calc_tot_send_time(network, source, dst, greedy_mode=True, fair_forwarding=True)
     # print(send_time, 'sending time')
-    # for i in range(30):
-    #     network.set_next_loss_window()
-    # send_time = calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False)
+    # paths = network.get_links_on_path(source, dst)
+    # print(len(paths))
+    # for i in combinations(paths):
+    #     for link in i:
+    #         network.set_link_failure(link)
+    #     if not network.way_to_dst(source, dst):
+    #         print(network.way_to_dst(source, dst))
+    #     network.reset_failures()
+    # send_time = calc_tot_send_time(network, source, dst, greedy_mode=True, fair_forwarding=True)
     # print(send_time, 'sending time')
-    # network.update_coop_groups()
-    # send_time = calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False)
-    # print(send_time, 'sending time')
-
+    for i in range(40):
+        network.set_next_loss_window()
+    send_time = calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False)
+    print(send_time, 'sending time')
+    send_time = calc_tot_send_time(network, source, dst, greedy_mode=True, fair_forwarding=True)
+    print(send_time, 'sending time')
 
 if __name__ == '__main__':
     main()
