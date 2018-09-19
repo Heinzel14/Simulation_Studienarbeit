@@ -2,8 +2,7 @@ from collections import deque
 from global_variables import *
 import coefficients_getter as cg
 from network import Network
-
-buffer = deque([])
+import numpy as np
 
 
 def combinations(objects, k):
@@ -19,14 +18,13 @@ def combinations(objects, k):
             yield combination
 
 
-def calc(node, network, dst, greedy_mode=False, fair_forwarding=False):
-
-    global buffer
+def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
 
     # this simulates a node failure | not needed anymore as node can be set to failed in network now
     # if coop_groups[node['name']].name in fail_nodes:
-    #     return 0
+    #     return 0buffer = deque([])
 
+    node = buffer.popleft()
     coop_groups = network.get_dst_coop_groups(dst)
     priorities = coop_groups[node['name']].get_priorities()
     expected_losses = coop_groups[node['name']].get_losses()
@@ -34,7 +32,8 @@ def calc(node, network, dst, greedy_mode=False, fair_forwarding=False):
 
     # pf and c calculation are chosen accordingly to the strategy
     if greedy_mode:
-        pf_List, pf_Dict, c = cg.get_greedy_stategy_pfs(priorities, expected_losses)
+            pf_List, pf_Dict, c = cg.get_greedy_stategy_pfs(priorities, expected_losses)
+
 
     elif fair_forwarding:
         pf_Dict = cg.calc_fair_pfs(expected_losses, priorities, False)
@@ -55,7 +54,7 @@ def calc(node, network, dst, greedy_mode=False, fair_forwarding=False):
     # expected because it is a feedback
     if dst and dst in pf_Dict and coop_groups[dst].total_data_received + n * \
             (1 - network.get_ideal_link_loss(node['name'], dst, dst)) >= 1:
-        print('got dst feedback')
+        # print('got dst feedback')
         n = (1/(1-network.get_ideal_link_loss(node['name'], dst, dst)))\
             * (1 - coop_groups[dst].total_data_received)
         m = n*c
@@ -77,7 +76,8 @@ def calc(node, network, dst, greedy_mode=False, fair_forwarding=False):
 
 
 def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False):
-    global buffer
+
+    buffer = deque([])
     tot_send_time = 0
     coop_groups = network.get_dst_coop_groups(dst)
 
@@ -89,7 +89,7 @@ def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=
     while len(buffer) > 0:
         if coop_groups[dst].total_data_received >= 0.99999:
             break
-        tot_send_time += calc(buffer.popleft(), network, dst, greedy_mode, fair_forwarding)
+        tot_send_time += calc(buffer, network, dst, greedy_mode, fair_forwarding)
     # this is the resending
     if coop_groups[dst].total_data_received < 0.99999:
         tot_send_time = tot_send_time * 1/coop_groups[dst].total_data_received
@@ -102,35 +102,41 @@ def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=
     return tot_send_time
 
 
-def main():
-    # issue: the result of the sending time is different when different calculations are done after
-    # each other. maybe because of greedy mode
-    global tot_m
-    dst = 'frawi'
-    source = 'kitchen'
+def compare_filter_rules():
+    #set priorities to first window
     network = Network()
     network.set_next_loss_window()
     network.update_coop_groups()
-    send_time = calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False)
-    print(send_time, 'sending time')
-    # send_time = calc_tot_send_time(network, source, dst, greedy_mode=True, fair_forwarding=True)
-    # print(send_time, 'sending time')
-    # paths = network.get_links_on_path(source, dst)
-    # print(len(paths))
-    # for i in combinations(paths):
-    #     for link in i:
-    #         network.set_link_failure(link)
-    #     if not network.way_to_dst(source, dst):
-    #         print(network.way_to_dst(source, dst))
-    #     network.reset_failures()
-    # send_time = calc_tot_send_time(network, source, dst, greedy_mode=True, fair_forwarding=True)
-    # print(send_time, 'sending time')
-    for i in range(40):
+    counter = int(MIN_BITMAP_SIZE/WINDOW_SIZE)
+    average_send_time_dict = {'normal':[], 'ff':[], 'ff_fe':[]}
+    for i in range(counter):
+        print('calculating for window ', i, 'out of ', counter)
         network.set_next_loss_window()
-    send_time = calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False)
-    print(send_time, 'sending time')
-    send_time = calc_tot_send_time(network, source, dst, greedy_mode=True, fair_forwarding=True)
-    print(send_time, 'sending time')
+        for dst in network.get_node_names():
+            send_times = {'normal':[], 'ff':[], 'ff_fe':[]}
+            for source in network.get_node_names():
+
+                if source == dst:
+                    continue
+
+                if not network.way_to_dst(source, dst):
+                    print('no connection for ', source, dst)
+                    continue
+                send_times['normal'].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                               fair_forwarding= False))
+                send_times['ff'].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                           fair_forwarding=True))
+                send_times['ff_fe'].append(calc_tot_send_time(network, source, dst, greedy_mode=True,
+                                                              fair_forwarding=True))
+            average_send_time_dict['normal'].append(np.mean(send_times['normal']))
+            average_send_time_dict['ff'].append(np.mean(send_times['ff']))
+            average_send_time_dict['ff_fe'].append(np.mean(send_times['ff_fe']))
+    return average_send_time_dict
+
+
+def main():
+    np.save("send_time_filter_rules_over_time_no_failures.npy", compare_filter_rules())
+
 
 if __name__ == '__main__':
     main()

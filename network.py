@@ -177,11 +177,6 @@ class Network:
             source, dst = permutation
             self.way_to_dst(source, dst, mark_links=True)
 
-
-
-
-
-
     def get_link_loss(self, link_source, link_dst, mcs):
         return self.links[(link_source, link_dst)].get_err(self.net, link_source, link_dst, mcs)
 
@@ -217,7 +212,7 @@ class Network:
 
         return self.dst_coop_groups[dst]
 
-    def way_to_dst(self, source, dst, mark_links = False):
+    def way_to_dst(self, source, dst, mark_links=False):
         """
         Returns False if source lost connection to dst and True if not
         :param source:
@@ -297,6 +292,9 @@ class Network:
             if link_source not in node_list and link_source is not source:
                 node_list.append(link_source)
         return node_list
+
+    def get_node_names(self):
+        return list(self.dst_coop_groups.keys())
 
 def dump_network(network):
     np.save("network.npy", network)
