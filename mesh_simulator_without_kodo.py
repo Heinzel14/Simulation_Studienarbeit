@@ -134,8 +134,89 @@ def compare_filter_rules():
     return average_send_time_dict
 
 
+def compare_filter_rules_with_edge_failures(max_failures):
+    network = Network()
+    send_times = {'normal': {}, 'ff': {}, 'ff_fe': {}}
+    for dst in network.get_node_names():
+        print('calculating for dst', dst)
+
+        for source in network.get_node_names():
+            if source == dst:
+                continue
+            for i in range(max_failures):
+                print('calculating for',i,'failed edges')
+                for links in combinations(network.get_links_on_path(source, dst), i):
+                    for link in links:
+                        network.set_link_failure(link)
+                    if not network.way_to_dst(source, dst):
+                        network.reset_failures()
+                        continue
+                    if str(i) not in send_times['normal']:
+                        send_times['normal'][str(i)] = [calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                           fair_forwarding=False)]
+                    else:
+                        send_times['normal'][str(i)].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                               fair_forwarding=False))
+                    if str(i) not in send_times['ff']:
+                        send_times['ff'][str(i)] = [calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                       fair_forwarding=True)]
+                    else:
+                        send_times['ff'][str(i)].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                           fair_forwarding=True))
+                    if str(i) not in send_times['ff_fe']:
+                        send_times['ff_fe'][str(i)] = [calc_tot_send_time(network, source, dst, greedy_mode=True,
+                                                                          fair_forwarding=True)]
+                    else:
+                        send_times['ff_fe'][str(i)].append(calc_tot_send_time(network, source, dst, greedy_mode=True,
+                                                                              fair_forwarding=True))
+                    network.reset_failures()
+    return send_times
+
+
+def compare_filter_rules_with_node_failures(max_failures):
+    network = Network()
+    send_times = {'normal': {}, 'ff': {}, 'ff_fe': {}}
+    for dst in network.get_node_names():
+        print('calculating for dst', dst)
+
+        for source in network.get_node_names():
+            if source == dst:
+                continue
+            for i in range(max_failures):
+                print('calculating for',i,'failed nodes')
+                for nodes in combinations(network.get_nodes_on_path(source, dst), i):
+                    for node in nodes:
+                        network.set_node_failure(node)
+                    if not network.way_to_dst(source, dst):
+                        network.reset_failures()
+                        continue
+                    if str(i) not in send_times['normal']:
+                        send_times['normal'][str(i)] = [calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                           fair_forwarding=False)]
+                    else:
+                        send_times['normal'][str(i)].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                               fair_forwarding=False))
+                    if str(i) not in send_times['ff']:
+                        send_times['ff'][str(i)] = [calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                       fair_forwarding=True)]
+                    else:
+                        send_times['ff'][str(i)].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                                           fair_forwarding=True))
+                    if str(i) not in send_times['ff_fe']:
+                        send_times['ff_fe'][str(i)] = [calc_tot_send_time(network, source, dst, greedy_mode=True,
+                                                                          fair_forwarding=True)]
+                    else:
+                        send_times['ff_fe'][str(i)].append(calc_tot_send_time(network, source, dst, greedy_mode=True,
+                                                                              fair_forwarding=True))
+                    network.reset_failures()
+    return send_times
+
+
 def main():
-    np.save("send_time_filter_rules_over_time_no_failures.npy", compare_filter_rules())
+    #np.save("send_time_filter_rules_over_time_no_failures.npy", compare_filter_rules())
+    #np.save("send_fime_filter_rules_failures.npy",compare_filter_rules_with_edge_failures(5))
+
+
 
 
 if __name__ == '__main__':
