@@ -191,7 +191,8 @@ class Network:
         """
         for (source, dst) in self.links:
             if source == fail_node or dst == fail_node:
-                self.set_link_failure(source, dst)
+                link = (source, dst)
+                self.set_link_failure(link)
 
     def unset_node_failure(self, fail_node):
         """
@@ -296,6 +297,7 @@ class Network:
     def get_node_names(self):
         return list(self.dst_coop_groups.keys())
 
+
 def dump_network(network):
     np.save("network.npy", network)
 
@@ -303,11 +305,13 @@ def dump_network(network):
 def load_network(path="network.py"):
     return np.load(path).item()
 
+
 def main():
     network = Network()
     network.set_next_loss_window()
     network.set_next_loss_window()
     network.update_coop_groups()
+
 
 if __name__ == '__main__':
     main()

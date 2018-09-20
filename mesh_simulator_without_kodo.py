@@ -5,6 +5,7 @@ from network import Network
 import numpy as np
 
 
+
 def combinations(objects, k):
     object = list(objects)
     if objects == [] or len(objects) < k or k == 0:
@@ -212,9 +213,14 @@ def compare_filter_rules_with_node_failures(max_failures):
     return send_times
 
 
+
+
+
 def main():
     #np.save("send_time_filter_rules_over_time_no_failures.npy", compare_filter_rules())
     #np.save("send_fime_filter_rules_failures.npy",compare_filter_rules_with_edge_failures(5))
+    np.save("send_time_filter_rules_node_failures.npy", compare_filter_rules_with_node_failures(4))
+
 
 
 
