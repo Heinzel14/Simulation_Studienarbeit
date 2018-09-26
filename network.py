@@ -34,6 +34,7 @@ class Link:
         self.source = source
         self.dst = dst
         self.participating_paths = []
+        self.forwarded_data = 0
 
     def get_err(self, net, source, dst, mcs):
         if self.failed:
@@ -56,6 +57,14 @@ class Link:
     def get_participating_paths(self):
         return self.participating_paths
 
+    def add_forwarded_data(self, forwarded_data):
+        self.forwarded_data += forwarded_data
+
+    def get_forwarded_data(self):
+        return self.forwarded_data
+
+    def reset_forwarded_data(self):
+        self.forwarded_data = 0
 
 class Vertex:
 
@@ -275,10 +284,23 @@ class Network:
                 node.rm_neighbour(min(node.priority_dict, key=node.priority_dict.get))
         return COOP_GROUPS
 
+    def get_links(self):
+        return self.links
+
     def get_links_on_path(self, source, dst):
         path = (source, dst)
         link_list = [link for link in self.links if path in self.links[link].get_participating_paths()]
         return link_list
+
+    def get_nodes_on_path(self, source, dst):
+        nodes_on_path = [source, dst]
+        for link in self.get_links_on_path(source, dst):
+            link_source, link_dst = link
+            if link_source not in nodes_on_path:
+                nodes_on_path.append(link_source)
+            elif link_dst not in nodes_on_path:
+                nodes_on_path.append(link_dst)
+        return nodes_on_path
 
     def get_nodes_on_path(self, source, dst):
         """
@@ -296,6 +318,16 @@ class Network:
 
     def get_node_names(self):
         return list(self.dst_coop_groups.keys())
+
+    def add_link_data(self, link, forwarded_data):
+        self.links[link].add_forwarded_data(forwarded_data)
+
+    def get_link_flow(self, link):
+        return self.links[link].get_forwarded_data()
+
+    def reset_link_forwardings(self):
+        for link in self.links.values():
+            link.reset_forwarded_data()
 
 
 def dump_network(network):

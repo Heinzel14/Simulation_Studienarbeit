@@ -44,6 +44,7 @@ def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
         c = cg.calc_c(expected_losses, [])
 
     m = node['m']
+    m_before = m
     test_value = sum([pf_Dict[name]*(1-expected_losses[name]) for name in pf_Dict])/c
     if test_value > 1.0000000000001 and greedy_mode == False:
         raise NameError('there should be no redundancy forwarded without greedy mode or '
@@ -67,10 +68,12 @@ def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
         coop_groups[neigh].total_data_received += n*(1-link_loss)
         # only nodes with neighbours are added to the buffer (dst or other nodes with
         # empty coop group won't send)
+        m = min(min(n * (1 - link_loss), node['m']) * pf_Dict[neigh], 1)
+        network.add_link_data((node['name'], neigh), m)
+        print(node['name'], neigh, network.get_link_flow((node['name'], neigh)))
         if len(coop_groups[neigh].get_priorities()) > 0 and pf_Dict[neigh] != 0:
             # first min: if loss is lower and neigh receives more there are only m innovative packets
             # second min: there can not be more innovative packets than the generation size
-            m = min(min(n*(1-link_loss), node['m'])*pf_Dict[neigh], 1)
             buffer.append({'name': neigh, 'm': m})
 
     return sending_time
@@ -78,6 +81,7 @@ def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
 
 def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False):
 
+    network.reset_link_forwardings()
     buffer = deque([])
     tot_send_time = 0
     coop_groups = network.get_dst_coop_groups(dst)
@@ -219,7 +223,8 @@ def compare_filter_rules_with_node_failures(max_failures):
 def main():
     #np.save("send_time_filter_rules_over_time_no_failures.npy", compare_filter_rules())
     #np.save("send_fime_filter_rules_failures.npy",compare_filter_rules_with_edge_failures(5))
-    np.save("send_time_filter_rules_node_failures.npy", compare_filter_rules_with_node_failures(4))
+    #np.save("send_time_filter_rules_node_failures.npy", compare_filter_rules_with_node_failures(4))
+    compare_filter_rules_with_edge_failures(3)
 
 
 

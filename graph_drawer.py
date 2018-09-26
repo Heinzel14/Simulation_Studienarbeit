@@ -1,44 +1,50 @@
-from prioritycruncher import *
+from network import Network
 import networkx as nx
 import pylab as plt
 from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
 import pygraphviz as pgv
 from global_variables import MAX_NEIGH
+from global_variables import MAX_LOSS
+from mesh_simulator_without_kodo import calc_tot_send_time
+import numpy as np
+import matplotlib.colors
 
-net = Network(crunched_root='net_dump_priority.npy')
-for dst in ['fl-geek']: #net.nodes:
+def draw_forwarding_network(source, dst):
+    network = Network()
+    #cmap = matplotlib.colors.get_named_colors_mapping()
+    cmap = plt.get_cmap('gnuplot')
+        #LinearSegmentedColormap.from_list("", ["red","green", "blue"])
     G = nx.DiGraph()
     # adding nodes to graph
-    if MAX_NEIGH:
-        for node in net.nodes:
-            if node == dst:
-                net.set_max_node_priority(node, dst, MAX_NEIGH, float('inf'))
-                G.add_node(node, style='filled', fillcolor='red')
-            else:
-                net.set_max_node_priority(node, dst, MAX_NEIGH, 0)
-                G.add_node(node)
-    net.compute_priority(dst, max_rounds=10, max_neigh=MAX_NEIGH, handle_correlation=False)
+    for node in network.get_nodes_on_path(source, dst):
+        G.add_node(node)
+    calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=True)
 
+    for link in network.get_links_on_path(source, dst):
+        link_source, link_dst = link
+        penwidth = 1+10*network.get_link_flow((link_source, link_dst))
+        color = matplotlib.colors.rgb2hex(cmap(network.get_link_flow((link_source, link_dst))))
+        G.add_edge(link_source, link_dst, penwidth=penwidth, color=color)
 
-    for node in net.nodes:
-        for link in net.egress_links(node, dst, MAX_NEIGH, net.ideal_coop_mcs(node, dst, MAX_NEIGH, False)):
-            mcs = net.ideal_coop_mcs(node, dst, MAX_NEIGH, False)
-            mcs_bitmask = link['mcs_bitmasks'][str(mcs)]['bitmap']
-            G.add_edge(link['src'], link['dst'], penwidth=
-                str(10*net.get_link_err(link, net.ideal_coop_mcs(node, dst, MAX_NEIGH, False)))) # str(0.05*mcs_dr_20Mhz_GI[mcs] *(np.count_nonzero(mcs_bitmask)) / len(mcs_bitmask))) #
-            if link['dst'] == dst:
-                print(link['src'], mcs_dr_20Mhz_GI[mcs] *(np.count_nonzero(mcs_bitmask)) / len(mcs_bitmask))
-    mapping = {nodename: (nodename + ' ' + str(round(net.get_priority(nodename, dst, MAX_NEIGH), 1))) for nodename in net.nodes}
+    mapping = {nodename: nodename for nodename in network.get_node_names()}
     nx.relabel_nodes(G, mapping, copy=False)
     # set defaults
-    G.graph['graph']={'rankdir':'TD'}
-    G.graph['node']={'shape':'circle'}
-    G.graph['edges']={'arrowsize':'4.0'}
-
-
-    A = to_agraph(G)
-    print(A)
+    G.graph['graph'] = {'rankdir': 'TD'}
+    G.graph['node'] = {'shape': 'circle'}
+    G.graph['edges'] = {'arrowsize': '4.0'}
+    plt.figure(figsize=(10, 10))
+    A=to_agraph(G)
     A.layout('dot')
-    data_name = dst+'new_pf_test.png'
-    A.draw(data_name)
+    data_name = dst + 'new_pf_test2.png'
+    A.draw(data_name, format='')
+    plt.savefig(data_name, dpi=1000)
+
+
+def main():
+    draw_forwarding_network('showrm2', 'mirko')
+
+
+if __name__ == '__main__':
+    main()
+
 
