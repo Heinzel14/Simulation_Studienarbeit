@@ -126,7 +126,7 @@ class Network:
         :param fair:
         :var self.links : dict of link objects
         """
-        self.net = pc.Network(crunched_root='net_dump_priority_test.npy')
+        self.net = pc.Network(crunched_root='net_dump_priority_normal.npy')
         self.dst_coop_groups = {}
         self.links = {}
         self.update_coop_groups(initialising=True)
@@ -221,6 +221,21 @@ class Network:
         """
 
         return self.dst_coop_groups[dst]
+
+    def single_path_way_to_dst(self, source, dst):
+        buffer = deque([])
+        coop_group = self.dst_coop_groups[dst]
+        buffer.append(coop_group[source])
+        true_flag = False
+        while len(buffer) > 0:
+            node = buffer.popleft()
+            if node.name == dst:
+                true_flag = True
+                return True
+            max_neigh = max(node.get_priorities(), key=node.get_priorities().get)
+            if self.get_link_loss(node.name, max_neigh, node.mcs) < 1:
+                    buffer.append(coop_group[max_neigh])
+        return true_flag
 
     def way_to_dst(self, source, dst, mark_links=False):
         """

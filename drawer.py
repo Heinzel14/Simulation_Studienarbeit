@@ -21,7 +21,8 @@ def bar_plot(group_number, member_number, group_dict):
         for group in range(group_number):
             if group not in group_labels:
                 group_labels.append(str(group))
-            group_member_means[member].append(np.mean(group_dict[member][str(group)]))
+            # change here
+            group_member_means[member].append(np.std(group_dict[member][str(group)]))
             group_member_stds[member].append(0)#np.std(group_dict[member][str(group)]))
     fig, ax = plt.subplots()
 
@@ -69,11 +70,11 @@ def main():
     # dict = load_np_file("send_time_filter_rules_node_failures.npy")
     # bar_plot(4, 2, dict)
     dict = load_np_file("send_time_filter_rules_over_time_no_failures.npy")
-    del dict['normal']
+    # del dict['normal']
+    del dict['ff']
     del dict['ff_fe']
     time_plot(dict)
 
 
 if __name__ == '__main__':
     main()
-

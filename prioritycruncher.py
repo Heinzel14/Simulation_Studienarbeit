@@ -609,8 +609,8 @@ class Network:
 
 def main():
     # net = Network('test_data/2017-04-28-15-34')
-    #net = Network(data_root='test_data/2017-7-31-11-35-46')
-    net = Network(crunched_root='net_dump_priority_test.npy')
+    net = Network(data_root='test_data/2017-7-31-11-35-46')
+    # net = Network(crunched_root='net_dump_priority_test.npy')
 
     # for dst in ['fl-print']:
     #     dst = 'fl-print'
@@ -620,7 +620,7 @@ def main():
     #     print(net.egress_neigh(node, dst, None, mcs))
 
     for dst in net.nodes.keys():
-         net.compute_priority(dst=dst, max_rounds=5, max_neigh=None, handle_correlation=False)
+        net.compute_priority(dst=dst, max_rounds=10, max_neigh=None, handle_correlation=False)
 
     # dst = 'frawi'
     # net.compute_priority(dst=dst, max_rounds=10, max_neigh=None, handle_correlation=False)
@@ -631,8 +631,7 @@ def main():
     #               '\tDatarate: {:8.4f}'.format(net.unipath_datarate(src, dst)))
 
     # net.dump_net('3_net_dump_priority.npy')
-    # net.dump_net('net_dump_priority_test.npy')
-
+    net.dump_net('net_dump_priority_normal.npy')
     # net.gen_dot_file_link_datarate()
     # net.gen_dot_file_link_airtime()
     # net.gen_vis_js_datarate()

@@ -32,16 +32,14 @@ def draw_forwarding_network(source, dst):
     G.graph['graph'] = {'rankdir': 'TD'}
     G.graph['node'] = {'shape': 'circle'}
     G.graph['edges'] = {'arrowsize': '4.0'}
-    plt.figure(figsize=(10, 10))
     A=to_agraph(G)
     A.layout('dot')
-    data_name = dst + 'new_pf_test2.png'
-    A.draw(data_name, format='')
-    plt.savefig(data_name, dpi=1000)
+    data_name = dst + '_fair_pf.png'
+    A.draw(data_name)
 
 
 def main():
-    draw_forwarding_network('showrm2', 'mirko')
+    draw_forwarding_network('mirko', 'stud2')
 
 
 if __name__ == '__main__':

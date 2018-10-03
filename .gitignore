@@ -113,5 +113,10 @@ dmypy.json
 # numpy
 *.npy
 
+# images
+*.png
+*.jpg
+*.eps
+
 #test_data
 test_data/

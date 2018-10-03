@@ -271,3 +271,12 @@ def get_bl_neighbour(losses, priorities):
                 lowestLoss = losses[node]
                 blNeighbour = [node]
     return blNeighbour
+
+
+def get_single_path_parameters(priority_dict, loss_dict):
+
+    max_neighbour = max(priority_dict, key=priority_dict.get)
+    c = 1-loss_dict[max_neighbour]
+    pf_dict = {max_neighbour:1}
+
+    return c, pf_dict

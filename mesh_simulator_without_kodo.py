@@ -19,7 +19,7 @@ def combinations(objects, k):
             yield combination
 
 
-def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
+def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False, single_path=False):
 
     # this simulates a node failure | not needed anymore as node can be set to failed in network now
     # if coop_groups[node['name']].name in fail_nodes:
@@ -32,9 +32,11 @@ def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
     datarate = coop_groups[node['name']].get_datarate()
 
     # pf and c calculation are chosen accordingly to the strategy
-    if greedy_mode:
-            pf_List, pf_Dict, c = cg.get_greedy_stategy_pfs(priorities, expected_losses)
+    if single_path:
+        c, pf_Dict = cg.get_single_path_parameters(priorities, expected_losses)
 
+    elif greedy_mode:
+            pf_List, pf_Dict, c = cg.get_greedy_stategy_pfs(priorities, expected_losses)
 
     elif fair_forwarding:
         pf_Dict = cg.calc_fair_pfs(expected_losses, priorities, False)
@@ -44,7 +46,6 @@ def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
         c = cg.calc_c(expected_losses, [])
 
     m = node['m']
-    m_before = m
     test_value = sum([pf_Dict[name]*(1-expected_losses[name]) for name in pf_Dict])/c
     if test_value > 1.0000000000001 and greedy_mode == False:
         raise NameError('there should be no redundancy forwarded without greedy mode or '
@@ -70,7 +71,7 @@ def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
         # empty coop group won't send)
         m = min(min(n * (1 - link_loss), node['m']) * pf_Dict[neigh], 1)
         network.add_link_data((node['name'], neigh), m)
-        print(node['name'], neigh, network.get_link_flow((node['name'], neigh)))
+        # print(node['name'], neigh, network.get_link_flow((node['name'], neigh)))
         if len(coop_groups[neigh].get_priorities()) > 0 and pf_Dict[neigh] != 0:
             # first min: if loss is lower and neigh receives more there are only m innovative packets
             # second min: there can not be more innovative packets than the generation size
@@ -79,7 +80,7 @@ def calc(buffer, network, dst, greedy_mode=False, fair_forwarding=False):
     return sending_time
 
 
-def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False):
+def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=False, single_path=False):
 
     network.reset_link_forwardings()
     buffer = deque([])
@@ -94,10 +95,15 @@ def calc_tot_send_time(network, source, dst, greedy_mode=False, fair_forwarding=
     while len(buffer) > 0:
         if coop_groups[dst].total_data_received >= 0.99999:
             break
-        tot_send_time += calc(buffer, network, dst, greedy_mode, fair_forwarding)
+        tot_send_time += calc(buffer, network, dst, greedy_mode, fair_forwarding, single_path)
     # this is the resending
-    if coop_groups[dst].total_data_received < 0.99999:
-        tot_send_time = tot_send_time * 1/coop_groups[dst].total_data_received
+    try:
+        if coop_groups[dst].total_data_received < 0.99999:
+            tot_send_time = tot_send_time * 1/coop_groups[dst].total_data_received
+    except:
+        print('single path mistalke')
+        print(source, dst)
+
 
     if coop_groups[dst].total_data_received > 1.0001:
         print('Destination got', coop_groups[dst].total_data_received)
@@ -113,12 +119,12 @@ def compare_filter_rules():
     network.set_next_loss_window()
     network.update_coop_groups()
     counter = int(MIN_BITMAP_SIZE/WINDOW_SIZE)
-    average_send_time_dict = {'normal':[], 'ff':[], 'ff_fe':[]}
+    average_send_time_dict = {'normal':[], 'ff':[], 'ff_fe':[], 'sp':[]}
     for i in range(counter):
         print('calculating for window ', i, 'out of ', counter)
         network.set_next_loss_window()
         for dst in network.get_node_names():
-            send_times = {'normal':[], 'ff':[], 'ff_fe':[]}
+            send_times = {'normal':[], 'ff':[], 'ff_fe':[], 'sp':[]}
             for source in network.get_node_names():
 
                 if source == dst:
@@ -133,9 +139,14 @@ def compare_filter_rules():
                                                            fair_forwarding=True))
                 send_times['ff_fe'].append(calc_tot_send_time(network, source, dst, greedy_mode=True,
                                                               fair_forwarding=True))
+                if network.single_path_way_to_dst(source, dst):
+                    send_times['sp'].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
+                                                              fair_forwarding=False, single_path=True))
             average_send_time_dict['normal'].append(np.mean(send_times['normal']))
             average_send_time_dict['ff'].append(np.mean(send_times['ff']))
             average_send_time_dict['ff_fe'].append(np.mean(send_times['ff_fe']))
+            average_send_time_dict['sp'].append(np.mean(send_times['sp']))
+
     return average_send_time_dict
 
 
@@ -221,10 +232,10 @@ def compare_filter_rules_with_node_failures(max_failures):
 
 
 def main():
-    #np.save("send_time_filter_rules_over_time_no_failures.npy", compare_filter_rules())
-    #np.save("send_fime_filter_rules_failures.npy",compare_filter_rules_with_edge_failures(5))
-    #np.save("send_time_filter_rules_node_failures.npy", compare_filter_rules_with_node_failures(4))
-    compare_filter_rules_with_edge_failures(3)
+    np.save("send_time_filter_rules_over_time_no_failures.npy", compare_filter_rules())
+    # np.save("send_time_filter_rules_node_failures.npy", compare_filter_rules_with_node_failures(4))
+    # np.save("send_fime_filter_rules_failures.npy",compare_filter_rules_with_edge_failures(4))
+
 
 
 
