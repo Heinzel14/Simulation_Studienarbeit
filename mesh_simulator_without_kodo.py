@@ -118,19 +118,19 @@ def compare_filter_rules():
     network = Network()
     network.set_next_loss_window()
     network.update_coop_groups()
-    counter = int(MIN_BITMAP_SIZE/WINDOW_SIZE)
+    counter = int(MIN_BITMAP_SIZE/WINDOW_SIZE)-1
     average_send_time_dict = {'normal':[], 'ff':[], 'ff_fe':[], 'sp':[]}
     for i in range(counter):
         print('calculating for window ', i, 'out of ', counter)
         network.set_next_loss_window()
+        send_times = {'normal': [], 'ff': [], 'ff_fe': [], 'sp': []}
         for dst in network.get_node_names():
-            send_times = {'normal':[], 'ff':[], 'ff_fe':[], 'sp':[]}
             for source in network.get_node_names():
 
                 if source == dst:
                     continue
 
-                if not network.way_to_dst(source, dst):
+                if not network.way_to_dst(source, dst) or not network.single_path_way_to_dst(source,dst):
                     print('no connection for ', source, dst)
                     continue
                 send_times['normal'].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
@@ -142,10 +142,11 @@ def compare_filter_rules():
                 if network.single_path_way_to_dst(source, dst):
                     send_times['sp'].append(calc_tot_send_time(network, source, dst, greedy_mode=False,
                                                               fair_forwarding=False, single_path=True))
-            average_send_time_dict['normal'].append(np.mean(send_times['normal']))
-            average_send_time_dict['ff'].append(np.mean(send_times['ff']))
-            average_send_time_dict['ff_fe'].append(np.mean(send_times['ff_fe']))
-            average_send_time_dict['sp'].append(np.mean(send_times['sp']))
+        average_send_time_dict['normal'].append(np.mean(send_times['normal']))
+        average_send_time_dict['ff'].append(np.mean(send_times['ff']))
+        average_send_time_dict['ff_fe'].append(np.mean(send_times['ff_fe']))
+        average_send_time_dict['sp'].append(np.mean(send_times['sp']))
+
 
     return average_send_time_dict
 

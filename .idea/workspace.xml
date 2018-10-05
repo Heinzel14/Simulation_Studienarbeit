@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea7b3bd2-a53e-4245-aae1-db0d8935aa7b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.directory" beforeDir="false" afterPath="$PROJECT_DIR$/.directory" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Simulation_Studienarbeit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Simulation_Studienarbeit.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coefficients_getter.py" beforeDir="false" afterPath="$PROJECT_DIR$/coefficients_getter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_drawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_drawer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global_variables.py" beforeDir="false" afterPath="$PROJECT_DIR$/global_variables.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mesh_simulator_without_kodo.py" beforeDir="false" afterPath="$PROJECT_DIR$/mesh_simulator_without_kodo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/network.py" beforeDir="false" afterPath="$PROJECT_DIR$/network.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prioritycruncher.py" beforeDir="false" afterPath="$PROJECT_DIR$/prioritycruncher.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,7 +17,7 @@
     <session id="2107040436">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.13" value="3" />
           <entry key="project.open.time.14" value="1" />
@@ -36,34 +30,58 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="png" value="5" />
-          <entry key="py" value="84" />
+          <entry key="py" value="96" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Image" value="5" />
-          <entry key="Python" value="84" />
+          <entry key="Python" value="96" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="8243" />
+          <entry key="py" value="8489" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="8243" />
+          <entry key="Python" value="8489" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/prioritycruncher.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="292" selection-start-line="292" selection-end-line="292" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/global_variables.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/drawer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="524">
-              <caret line="72" column="6" selection-start-line="72" selection-start-column="6" selection-end-line="72" selection-end-column="6" />
+            <state relative-caret-position="637">
+              <caret line="82" column="24" lean-forward="true" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -71,11 +89,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/network.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="236" column="54" selection-start-line="236" selection-start-column="54" selection-end-line="236" selection-end-column="54" />
+            <state relative-caret-position="210">
+              <caret line="131" column="50" lean-forward="true" selection-start-line="131" selection-start-column="50" selection-end-line="131" selection-end-column="50" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <marker date="1538566282137" expanded="true" signature="7161:7167" ph="..." />
               </folding>
             </state>
           </provider>
@@ -84,11 +101,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mesh_simulator_without_kodo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="117" column="23" lean-forward="true" selection-start-line="117" selection-start-column="23" selection-end-line="117" selection-end-column="23" />
+            <state relative-caret-position="1935">
+              <caret line="132" column="105" lean-forward="true" selection-start-line="132" selection-start-column="105" selection-end-line="132" selection-end-column="105" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <marker date="1538566282133" expanded="true" signature="11243:11248" ph="..." />
+                <marker date="1538580764545" expanded="true" signature="11280:11285" ph="..." />
               </folding>
             </state>
           </provider>
@@ -97,8 +114,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/coefficients_getter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1079">
-              <caret line="277" column="61" lean-forward="true" selection-start-line="277" selection-start-column="20" selection-end-line="277" selection-end-column="61" />
+            <state relative-caret-position="475">
+              <caret line="277" column="61" selection-start-line="277" selection-start-column="20" selection-end-line="277" selection-end-column="61" />
               <folding>
                 <marker date="1538557999365" expanded="true" signature="9013:9018" ph="..." />
               </folding>
@@ -143,11 +160,12 @@
         <option value="$PROJECT_DIR$/coefficients_getter.py" />
         <option value="$PROJECT_DIR$/network.py" />
         <option value="$PROJECT_DIR$/mesh_simulator_without_kodo.py" />
+        <option value="$PROJECT_DIR$/global_variables.py" />
         <option value="$PROJECT_DIR$/drawer.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="4" />
     <option name="y" value="348" />
     <option name="width" value="1272" />
@@ -312,22 +330,21 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-31" width="1920" height="1111" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1920" height="1044" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.33720317" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49786097" visible="true" weight="0.2072072" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.9016043" weight="0.37790054" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39967373" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50213903" side_tool="true" visible="true" weight="0.2072072" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.09839572" side_tool="true" weight="0.24530387" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -341,14 +358,14 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4983957" weight="0.20773481" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4973262" visible="true" weight="0.22541437" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39967373" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50160426" side_tool="true" visible="true" weight="0.22541437" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5026738" side_tool="true" visible="true" weight="0.22541437" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -392,23 +409,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/global_variables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="15" selection-start-column="15" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/prioritycruncher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/pygraphviz/agraph.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20040">
@@ -426,42 +426,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/network.py">
+    <entry file="file://$PROJECT_DIR$/prioritycruncher.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="236" column="54" selection-start-line="236" selection-start-column="54" selection-end-line="236" selection-end-column="54" />
+        <state relative-caret-position="208">
+          <caret line="292" selection-start-line="292" selection-end-line="292" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1538566282137" expanded="true" signature="7161:7167" ph="..." />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mesh_simulator_without_kodo.py">
+    <entry file="file://$PROJECT_DIR$/global_variables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="117" column="23" lean-forward="true" selection-start-line="117" selection-start-column="23" selection-end-line="117" selection-end-column="23" />
+        <state relative-caret-position="15">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="131" column="50" lean-forward="true" selection-start-line="131" selection-start-column="50" selection-end-line="131" selection-end-column="50" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
-            <marker date="1538566282133" expanded="true" signature="11243:11248" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/coefficients_getter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1079">
-          <caret line="277" column="61" lean-forward="true" selection-start-line="277" selection-start-column="20" selection-end-line="277" selection-end-column="61" />
+        <state relative-caret-position="475">
+          <caret line="277" column="61" selection-start-line="277" selection-start-column="20" selection-end-line="277" selection-end-column="61" />
           <folding>
             <marker date="1538557999365" expanded="true" signature="9013:9018" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mesh_simulator_without_kodo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1935">
+          <caret line="132" column="105" lean-forward="true" selection-start-line="132" selection-start-column="105" selection-end-line="132" selection-end-column="105" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1538580764545" expanded="true" signature="11280:11285" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/drawer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="72" column="6" selection-start-line="72" selection-start-column="6" selection-end-line="72" selection-end-column="6" />
+        <state relative-caret-position="637">
+          <caret line="82" column="24" lean-forward="true" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

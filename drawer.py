@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import spline
 from matplotlib.ticker import MaxNLocator
 from collections import namedtuple
 
@@ -55,11 +56,16 @@ def bar_plot(group_number, member_number, group_dict):
 
 
 def time_plot(dict):
-    plt.gca().set_color_cycle(['red', 'green', 'blue', 'yellow'])
+
+    plt.gca().set_color_cycle(['red', 'green', 'blue', 'orange'])
     legend = []
     for key in dict:
         legend.append(key)
-        plt.plot(np.arange(len(dict[key])), dict[key], linestyle=':')
+        x = np.arange(len(dict[key]))
+        y = dict[key]
+        xnew = np.linspace(x.min(), x.max(), 1000)
+        ynew = spline(x,y,xnew)
+        plt.plot(x, y, linestyle=':')
     plt.legend(legend, loc='upper left')
     plt.show()
 
@@ -72,7 +78,11 @@ def main():
     dict = load_np_file("send_time_filter_rules_over_time_no_failures.npy")
     # del dict['normal']
     del dict['ff']
-    del dict['ff_fe']
+    # del dict['ff_fe']
+    for i in range(0):
+        for key in dict:
+            dict[key].pop()
+
     time_plot(dict)
 
 
